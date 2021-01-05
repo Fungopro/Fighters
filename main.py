@@ -13,19 +13,17 @@ class Fighter:
             f2.__del__()
             self.random_attack(arr_f)
         else:
-            print(self.name, 'Attack', f2.name)
+            print(self.name, '->', f2.name)
             f2.get_dmg(self.dmg, arr_f)
 
     def __str__(self):
         return self.name
 
     def random_attack(self, arr_f):
-        if len(arr_f) == 1:
-            print(arr_f)
-            print(f'win {self.name}')
-            self.get_info()
-            exit()
         arr_f.remove(self)
+        for item in arr_f:
+            if item is None:
+                arr_f.remove(item)
         self.attack(arr_f[randrange(len(arr_f))], arr_f)
         arr_f.append(self)
         return arr_f
@@ -49,10 +47,30 @@ class Fighter:
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    fighters = [Fighter('guard_' + str(i)) for i in range(1, 4)]
-    print(len(fighters))
-    while len(fighters) > 1:
-        fighters = fighters[randrange(1, 3)].random_attack(fighters)
-    for item in fighters:
-        item.get_info()
+    fighter1 = Fighter('guard_1')
+    fighter2 = Fighter('guard_2')
+    fighter3 = Fighter('guard_3')
+    arr = [fighter1, fighter2, fighter3]
+    while True:
+        if 'fighter1' in locals() and len(arr) > 1:
+            fighter1.random_attack(arr)
+            if fighter1.hp == 0:
+                arr.remove(fighter1)
+                del fighter1
+        if 'fighter2' in locals() and len(arr) > 1:
+            fighter2.random_attack(arr)
+            if fighter2.hp == 0:
+                arr.remove(fighter2)
+                del fighter2
+        if 'fighter3' in locals() and len(arr) > 1:
+            fighter3.random_attack(arr)
+            if fighter3.hp == 0:
+                arr.remove(fighter3)
+                del fighter3
+        for item in arr:
+            if item is not None:
+                item.get_info()
+        if len(arr) == 1:
+            print(arr[0], 'is winner!')
+            break
 
