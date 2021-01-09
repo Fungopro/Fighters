@@ -1,51 +1,5 @@
-from random import randrange
+from Fighter.Fighter import Fighter
 
-
-class Fighter:
-    def __init__(self, n, h=100, d=20):
-        self.hp = h
-        self.dmg = d
-        self.name = n
-
-    def attack(self, f2, arr_f):
-        if f2.hp <= 0:
-            arr_f.remove(f2)
-            f2.__del__()
-            self.random_attack(arr_f)
-        else:
-            print(self.name, '->', f2.name)
-            f2.get_dmg(self.dmg, arr_f)
-
-    def __str__(self):
-        return self.name
-
-    def random_attack(self, arr_f):
-        arr_f.remove(self)
-        for item in arr_f:
-            if item is None:
-                arr_f.remove(item)
-        self.attack(arr_f[randrange(len(arr_f))], arr_f)
-        arr_f.append(self)
-        return arr_f
-
-    def get_dmg(self, dmg, arr_f):
-        if self.hp <= 0:
-            print(self.name, 'Умер')
-            arr_f.remove(self)
-            self.__del__()
-        else:
-            self.hp = self.hp - dmg
-            print(self.name, f'Осталось: {self.hp} хп')
-
-    def get_info(self):
-        print(self.name, self.hp, self.dmg)
-
-    def __del__(self):
-        print(f"Valhalla, {self.name} is coming")
-        del self
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     fighter1 = Fighter('guard_1')
     fighter2 = Fighter('guard_2')
@@ -54,17 +8,17 @@ if __name__ == '__main__':
     while True:
         if 'fighter1' in locals() and len(arr) > 1:
             fighter1.random_attack(arr)
-            if fighter1.hp == 0:
+            if fighter1.hp <= 0:
                 arr.remove(fighter1)
                 del fighter1
         if 'fighter2' in locals() and len(arr) > 1:
             fighter2.random_attack(arr)
-            if fighter2.hp == 0:
+            if fighter2.hp <= 0:
                 arr.remove(fighter2)
                 del fighter2
         if 'fighter3' in locals() and len(arr) > 1:
             fighter3.random_attack(arr)
-            if fighter3.hp == 0:
+            if fighter3.hp <= 0:
                 arr.remove(fighter3)
                 del fighter3
         for item in arr:
