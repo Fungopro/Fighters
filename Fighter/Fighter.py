@@ -4,12 +4,21 @@ from random import randrange
 from Weapon.LongBow.Bow import LongBow
 from Weapon.Swords.Sword import Sword
 
-
+# Получить оружие с макс уроном с противника(метод)
+# Вместо оружия появляется массив оружия
+# У врага при смерти забираем самое мощное оружие
+# Состояние у персонажей
+# Реализовать состояния в качестве паттерна, в начале каждого хода они будут обрабатываться отдельным методом(холод, огонь, кислота)
+# Реализовать класс батлграунд, где будет запуск и сам бой персонажей
+# Добавить рукопашный бой
+# Добавить броню и атрибуты для нее
 class Fighter:
     def __init__(self, n, h=100):
         self.hp = h
         self.name = n
         self.weapon = self.get_weapon()
+        self.armor = self.get_armor()
+        self.state = []
 
     def get_weapon(self):
         sword = Sword('hell sword', random.randint(20, 26))
@@ -57,3 +66,6 @@ class Fighter:
     def __del__(self):
         print(f"Valhalla, {self.name} is coming")
         del self
+
+    def get_armor(self):
+        pass
