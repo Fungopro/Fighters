@@ -21,13 +21,9 @@ class Fighter:
             print(self.name, 'jungle bow')
             return bow
 
-    def attack(self, f2, arr_f):
-        if f2.hp <= 0:
-            arr_f.remove(f2)
-            del f2
-        else:
-            print(self.name, '->', f2.name)
-            f2.get_dmg(self.weapon.dmg_deal(), arr_f)
+    def attack(self, f2):
+        print(self.name, '->', f2.name)
+        f2.get_dmg(self.weapon.dmg_deal())
 
     def __str__(self):
         return self.name
@@ -38,16 +34,11 @@ class Fighter:
         for item in arr_f:
             if item is None:
                 arr_f.remove(item)
-        self.attack(arr_f[randrange(len(arr_f))], arr_f)
+        self.attack(arr_f[randrange(len(arr_f))])
         arr_f.append(self)
         return arr_f
 
-    def get_dmg(self, dmg, arr_f):
-        if self.hp <= 0:
-            print(self.name, 'Умер')
-            arr_f.remove(self)
-            self.__del__()
-        else:
+    def get_dmg(self, dmg):
             self.hp = self.hp - dmg
             print(self.name, f'Осталось: {self.hp} хп')
 
