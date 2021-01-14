@@ -16,4 +16,4 @@ class Armor:
         raise Exception(' Метод нереализован')
 
     def __le__(self, other):
-        return self.dmg_deal() <= other.dmg_deal()
+        return self.dmg_deal() < other.dmg_deal()

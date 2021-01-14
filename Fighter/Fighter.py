@@ -1,3 +1,4 @@
+import functools
 import random
 from random import randrange
 
@@ -12,6 +13,8 @@ from Weapon.Swords.Sword import Sword
 # Реализовать класс батлграунд, где будет запуск и сам бой персонажей
 # Добавить рукопашный бой
 # Добавить броню и атрибуты для нее
+
+
 class Fighter:
     def __init__(self, n, h=100):
         self.hp = h
@@ -21,14 +24,22 @@ class Fighter:
         self.state = []
 
     def get_weapon(self):
-        sword = Sword('hell sword', random.randint(20, 26))
-        bow = LongBow('jungle bow', random.randint(15, 26), random.randint(70, 90)/100.)
-        if sword >= bow:
-            print(self.name, ' get hell sword')
-            return sword
-        else:
-            print(self.name, 'jungle bow')
-            return bow
+        arr = []
+        for i in range(0, 2):
+            sword = Sword('hell sword', random.randint(20, 30))
+            bow = LongBow('jungle bow', random.randint(15, 25), random.randint(70, 90) / 100.)
+            if sword >= bow:
+                print(self.name, ' get hell sword: ', sword)
+                arr.append(sword)
+            else:
+                print(self.name, 'get jungle bow: ', bow)
+                arr.append(bow)
+        return arr
+
+    def get_best_weapon_dmg(self):
+        self.weapon = functools.total_ordering(self.weapon)
+        print('WEAPON: ', [str(i) for i in self.weapon])
+        return self.weapon[0].dmg_deal()
 
     def attack(self, f2, arr_f):
         if f2.hp <= 0:
@@ -36,7 +47,7 @@ class Fighter:
             del f2
         else:
             print(self.name, '->', f2.name)
-            f2.get_dmg(self.weapon.dmg_deal(), arr_f)
+            f2.get_dmg(self.get_best_weapon_dmg(), arr_f)
 
     def __str__(self):
         return self.name
@@ -61,7 +72,7 @@ class Fighter:
             print(self.name, f'Осталось: {self.hp} хп')
 
     def get_info(self):
-        print(self.name, self.hp, self.weapon.dmg_deal())
+        print(self.name, self.hp)
 
     def __del__(self):
         print(f"Valhalla, {self.name} is coming")
