@@ -16,8 +16,10 @@ class Sword(Weapon):
         if random.randint(0, 100) > 50 and self.hp > 0:
             self.hp -= .1
             return self.get_dmg()
+        elif self.hp > 0:
+            return self.get_dmg()
         else:
-            return 0
+            return 5
 
     def __le__(self, other):
         return self.get_dmg() <= other.get_dmg()
