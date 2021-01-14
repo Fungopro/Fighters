@@ -10,7 +10,7 @@ class LongBow(Weapon):
 
     def dmg_deal(self):
         chnc = random.randint(0, 100)/100
-        if chnc< self.chance:
+        if chnc < self.chance:
             return self.dmg_deal()
         else:
             print('Промах!')
