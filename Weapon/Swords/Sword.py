@@ -1,11 +1,13 @@
 import random
 
+from State.Cold import Cold
+from State.Fire import Fire
 from Weapon.Weapon import Weapon
 
 
 class Sword(Weapon):
-    def __init__(self, n, dmg):
-        super().__init__(n, dmg)
+    def __init__(self, n, dmg, e):
+        super().__init__(n, dmg, e)
         self.hp = 1.
 
     def get_dmg(self):
@@ -15,14 +17,22 @@ class Sword(Weapon):
     def dmg_deal(self):
         if random.randint(0, 100) > 50 and self.hp > 0:
             self.hp -= .1
-            return self.get_dmg()
+            return [self.get_dmg(), self.get_effect()]
         elif self.hp > 0:
-            return self.get_dmg()
+            return [self.get_dmg(), self.get_effect()]
         else:
-            return 5
+            return [5, self.get_effect()]
 
-    def __le__(self, other):
-        return self.get_dmg() <= other.get_dmg()
+    def get_effect(self):
+        arr = []
+        for item in self.effect:
+            if random.randint(0, 100) < 80:
+                if item == 'Fire':
+                    arr.append(Cold(2))
+                else:
+                    arr.append(Fire(2, 5))
+        return arr
 
     def __str__(self):
-        return self.name + '   ' + str(self.dmg) + '    ' + str(self.hp)
+        return self.name + '   ' + str(self.dmg) + '    ' + str(self.hp) + '    ' + str([str(i) for i in self.effect])
+
