@@ -32,4 +32,4 @@ class LongBow(Weapon):
         return arr
 
     def __str__(self):
-        return self.name + '   ' + str(self.dmg) + '    ' + str(self.chance)
+        return self.name + '   ' + str(self.dmg) + '    ' + str(self.chance) + ' ' + str(self.effect)

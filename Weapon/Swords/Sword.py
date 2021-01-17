@@ -21,7 +21,7 @@ class Sword(Weapon):
         elif self.hp > 0:
             return [self.get_dmg(), self.get_effect()]
         else:
-            return [5, self.get_effect()]
+            return [5, []]
 
     def get_effect(self):
         arr = []
@@ -30,7 +30,7 @@ class Sword(Weapon):
                 if item == 'Fire':
                     arr.append(Cold(2))
                 else:
-                    arr.append(Fire(2, 5))
+                    arr.append(Fire(10, 5))
         return arr
 
     def __str__(self):

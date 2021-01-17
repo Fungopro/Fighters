@@ -7,7 +7,7 @@ class Cold(State):
 
     def get_state(self):
         self.durability -= 1
-        if self.durability >= 0:
+        if self.durability == 0:
             print('Холод ушел')
         return True if self.durability >= 0 else False
 

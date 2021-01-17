@@ -12,6 +12,9 @@ class Armor:
         else:
             return abs(self.hp)
 
+    def get_hp(self):
+        return self.hp if self.hp > 0 else 0
+
     def dmg_deal(self):
         raise Exception(' Метод нереализован')
 

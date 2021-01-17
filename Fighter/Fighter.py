@@ -2,6 +2,7 @@ import functools
 import random
 from random import randrange
 
+from Armor.Armor import Armor
 from State.Cold import Cold
 from State.Fire import Fire
 from Weapon.LongBow.Bow import LongBow
@@ -11,8 +12,7 @@ from Weapon.Swords.Sword import Sword
 # Вместо оружия появляется массив оружия
 # У врага при смерти забираем самое мощное оружие
 # Состояние у персонажей
-# Реализовать состояния в качестве паттерна, в начале каждого хода они будут обрабатываться отдельным методом(холод, огонь, кислота)
-# Реализовать класс батлграунд, где будет запуск и сам бой персонажей
+# Реализовать состояния в качестве массива, в начале каждого хода они будут обрабатываться отдельным методом(холод, огонь, кислота)
 # Добавить рукопашный бой
 # Добавить броню и атрибуты для нее
 
@@ -41,10 +41,20 @@ class Fighter:
                 arr.append(bow)
         return arr
 
+    def get_armor(self):
+        ran = random.randint(0, 4)
+        print(ran)
+        effect = ['Fire'] if ran == 1 else ['Cold'] if ran == 2 else [] if ran == 3 else ['Fire', 'Cold']
+        armor = Armor(random.randint(50, 100), effect)
+        return armor
+
     def get_best_weapon_dmg(self):
         self.weapon = sorted(self.weapon, reverse=True)
-        print('WEAPON: ',self.name , [str(i) for i in self.weapon])
-        return self.weapon[0].dmg_deal()
+        print('WEAPON: ', self.name, [str(i) for i in self.weapon])
+        if len(self.weapon) > 0:
+            return self.weapon[0].dmg_deal()
+        else:
+            return [5, []]
 
     def get_effect(self):
         arr = []
@@ -67,11 +77,14 @@ class Fighter:
             del f2
         else:
             cold = True in effect
-            print('!!!!!!!!!!!!!!!!!!!!', self.name, [i.durability for i in self.state], True in effect)
             if cold:
                 print(self.name, 'Замерз, ему нужно твое тепло')
             else:
                 f2.get_dmg(self.get_best_weapon_dmg(), arr_f)
+                if f2.hp < 0:
+                    print(self.name, ' Убил ', f2.name)
+                    if len(f2.weapon) > 0:
+                        self.weapon.append(f2.weapon[0])
 
     def __str__(self):
         return self.name
@@ -88,9 +101,25 @@ class Fighter:
         return arr_f
 
     def get_dmg(self, dmg, arr_f):
-        self.hp = self.hp - dmg[0]
-        print(self.name, f'Осталось: {self.hp} хп')
-        self.state = self.state + dmg[1]
+        print(dmg[0])
+        damage = dmg[0]
+        if self.armor.get_hp() > 0:
+            self.armor.get_dmg(damage)
+            if self.armor.get_hp() < 0:
+                self.hp = self.hp - abs(self.armor.get_hp())
+                print('Броня сломана у ', self.name)
+        else:
+            self.hp = self.hp - dmg[0]
+        print(self.name, f'Осталось: {self.hp} хп и {self.armor.get_hp()} брони')
+        eff = dmg[1]
+        if len(eff) > 0 and len(self.armor.atr) > 0:
+            for item in eff:
+                if str(item) in self.armor.atr and random.randint(0, 100) < 80:
+                    eff.remove(item)
+                    print('Заблокирован эффект ', str(item))
+        if len(eff) > 0:
+            print(f' На {self.name} были повешены эффекты {[str(i) for i in eff]}')
+        self.state = self.state + eff
         if self.hp <= 0:
             arr_f.remove(self)
             self.__del__()
@@ -102,5 +131,3 @@ class Fighter:
         print(f"Valhalla, {self.name} is coming")
         del self
 
-    def get_armor(self):
-        pass

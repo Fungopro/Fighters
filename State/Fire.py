@@ -7,7 +7,7 @@ class Fire(State):
         self.dmg = dmg
 
     def get_state(self):
-        self.durability -= 1
+        self.durability -= 5
         if self.durability >= 0:
             print('Огонь ушел')
         return self.dmg if self.durability >= 0 else 0
